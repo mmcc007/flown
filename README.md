@@ -46,6 +46,7 @@ General usage
     pub global activate flown
 
 Dependencies
+
 [Flutter SDK](https://flutter.io/get-started/install/) should be installed. Also depends on git.
 
 ## Features and bugs
