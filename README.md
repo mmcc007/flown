@@ -1,3 +1,5 @@
+[![pub package](https://img.shields.io/pub/v/flown.svg)](https://pub.dartlang.org/packages/flown)
+
 # flown
 
 A utility for cloning Flutter apps with local dependencies
