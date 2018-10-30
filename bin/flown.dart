@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yamlicious/yamlicious.dart';
+import 'package:path/path.dart' as path;
 
 const usage = 'usage: flown [--help] --arch <arch name> --name <project name>';
 const sampleUsage = 'sample usage: flown --arch vanilla --name vanilla_project';
@@ -21,7 +22,9 @@ const devDependencies = 'dev_dependencies';
 const localDependencyPath = 'path';
 
 // project constants
-const projects = 'example';
+const projectURL = 'https://github.com/brianegan/$projectName.git';
+const projectName = 'flutter_architecture_samples';
+const projectsDir = 'example';
 
 // globals
 ArgParser argParser;
@@ -107,20 +110,12 @@ void _showUsage() {
 void _buildProject() async {
   final tempDir = Directory.systemTemp.path;
   // download repo to tmp location
-  if (!await FileSystemEntity.isDirectory(
-      '$tempDir/flutter_architecture_samples')) {
-    print(
-        'Cloning https://github.com/brianegan/flutter_architecture_samples.git to $tempDir...');
-    await _cmd(
-        'git',
-        [
-          'clone',
-          'https://github.com/brianegan/flutter_architecture_samples.git'
-        ],
-        tempDir);
+  if (!await FileSystemEntity.isDirectory(path.join(tempDir, projectName))) {
+    print('Cloning $projectURL to $tempDir...');
+    await _cmd('git', ['clone', projectURL], tempDir);
   }
   final inputDir =
-      '$tempDir/flutter_architecture_samples/$projects/${argResults[argArch]}';
+      path.join(tempDir, projectName, projectsDir, argResults[argArch]);
   final outputDir = argResults[argName];
 
   // copy arch project
@@ -130,7 +125,7 @@ void _buildProject() async {
 
   // copy local dependencies of arch project
   _copyLocalDependencies(
-      '$tempDir/flutter_architecture_samples/$projects/${argResults[argArch]}/$pubspecYaml',
+      path.join(inputDir, pubspecYaml),
       inputDir,
       outputDir);
 
@@ -138,8 +133,8 @@ void _buildProject() async {
   print('\nInstalling local dependencies in $outputDir...');
   _cleanupPubspec(outputDir);
 
-  // get packages in new project to confirm dependencies installed
-//  await _cmd('flutter', ['packages', 'get'], outputDir);
+  // delete downloaded url
+//  await _cmd('rm', ['-rf', path.join(tempDir, projectName)]);
 
   print(
       '\nYour standalone ${argResults[argArch]} application is ready! To run type:');
