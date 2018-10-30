@@ -6,15 +6,13 @@ import 'package:args/args.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yamlicious/yamlicious.dart';
 
-const usage =
-    'usage: flown [--help] --arch=<arch name> --out=<project directory>';
-const sampleUsage =
-    'sample usage: flown --arch vanilla --out /tmp/vanilla_project';
+const usage = 'usage: flown [--help] --arch <arch name> --name <project name>';
+const sampleUsage = 'sample usage: flown --arch vanilla --name vanilla_project';
 
 // arg constants
 const argHelp = 'help';
 const argArch = 'arch';
-const argOut = 'out';
+const argOut = 'name';
 
 // pubspec constants
 const pubspecYaml = 'pubspec.yaml';
@@ -28,8 +26,6 @@ const projects = 'example';
 // globals
 ArgParser argParser;
 ArgResults argResults;
-String projectName;
-String projectDir;
 
 /// generate a standalone project from an example architecture
 void main(List<String> arguments) {
@@ -70,11 +66,9 @@ void _parseCommandLineArgs(List<String> arguments) {
           'simple_bloc_flutter': 'Simple BloC pattern with Firestore backend.',
           'vanilla': 'Standard Flutter pattern.',
         })
-    ..addOption(argOut,
-        help: 'Directory location for new standalone project.',
-        valueHelp: 'dir')
+    ..addOption(argOut, help: 'Name of new project.', valueHelp: 'project name')
     ..addFlag(argHelp,
-        help: 'Display help information for create_project.', negatable: false);
+        help: 'Display this help information.', negatable: false);
 
   try {
     argResults = argParser.parse(arguments);
@@ -84,10 +78,8 @@ void _parseCommandLineArgs(List<String> arguments) {
 }
 
 Future _validateArgs() async {
+  if (argResults.arguments.length == 0) _showUsage();
   if (argResults[argHelp]) _showUsage();
-  if (!await FileSystemEntity.isDirectory('.git')) {
-    _handleError('error: not in root of flutter_architecture_samples repo');
-  }
   if (argResults[argArch] == null) {
     _handleError("Missing required argument: arch");
   }
@@ -96,12 +88,6 @@ Future _validateArgs() async {
   }
   if (await FileSystemEntity.isDirectory(argResults[argOut])) {
     _handleError('error: directory ${argResults[argOut]} already exists');
-  }
-  final pathComponents = argResults[argOut].split('/');
-  projectName = pathComponents.removeLast();
-  projectDir = pathComponents.join('/');
-  if (!await FileSystemEntity.isDirectory(projectDir)) {
-    _handleError('error: $projectDir is not a directory');
   }
 }
 
@@ -117,35 +103,41 @@ void _showUsage() {
   exit(2);
 }
 
-void _buildProject() {
-  final inputDir = '$projects/${argResults[argArch]}';
+void _buildProject() async {
+  // download repo to tmp location
+  if (!await FileSystemEntity.isDirectory(
+      '/tmp/flutter_architecture_samples')) {
+    print(
+        'Cloning https://github.com/brianegan/flutter_architecture_samples.git to /tmp...');
+    await _cmd(
+        'git',
+        [
+          'clone',
+          'https://github.com/brianegan/flutter_architecture_samples.git'
+        ],
+        '/tmp');
+  }
+  final inputDir =
+      '/tmp/flutter_architecture_samples/$projects/${argResults[argArch]}';
   final outputDir = argResults[argOut];
-
-  // create default project
-  print('Creating $projectName in $projectDir. Please wait...\n');
-  _cmd('flutter', ['create', '$projectName'], projectDir);
-
-  // delete default lib and test
-  _cmd('rm', ['-rf', 'lib', 'test'], outputDir);
 
   // copy arch project
   print(
       'Copying ${argResults[argArch]} to ${argResults[argOut]} with local dependencies...');
-  _copyPackage(inputDir, outputDir);
+  await _copyPackage(inputDir, outputDir);
 
   // copy local dependencies of arch project
   _copyLocalDependencies(
-      '$projects/${argResults[argArch]}/$pubspecYaml', inputDir, outputDir);
+      '/tmp/flutter_architecture_samples/$projects/${argResults[argArch]}/$pubspecYaml',
+      inputDir,
+      outputDir);
 
   // cleanup new project pubspec
-  print('\nInstalling local dependencies in $projectName...');
+  print('\nInstalling local dependencies in $outputDir...');
   _cleanupPubspec(outputDir);
 
-  // todo apply android/ios fixes for specific projects
-  _fixProjectBuilds(inputDir, outputDir);
-
   // get packages in new project to confirm dependencies installed
-  _cmd('flutter', ['packages', 'get'], outputDir);
+//  await _cmd('flutter', ['packages', 'get'], outputDir);
 
   print(
       '\nYour standalone ${argResults[argArch]} application is ready! To run type:');
@@ -172,28 +164,28 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
   });
 }
 
-void _copyPackage(String srcDir, String dstDir) async {
+Future _copyPackage(String srcDir, String dstDir) async {
   print('  copying to $dstDir...');
-  _cmd('mkdir', ['-p', dstDir]);
-  _cmd('cp', ['-r', '$srcDir/lib', '$dstDir']);
-  _cmd('cp', ['$srcDir/$pubspecYaml', dstDir]);
-  // copy additional directories if available
-  if (await FileSystemEntity.isDirectory('$srcDir/test')) {
-    _cmd('cp', ['-r', '$srcDir/test', '$dstDir']);
-  }
-  if (await FileSystemEntity.isDirectory('$srcDir/test_driver')) {
-    _cmd('cp', ['-r', '$srcDir/test_driver', '$dstDir']);
-  }
+  await _cmd('cp', ['-r', '$srcDir', '$dstDir']);
 }
 
-void _cmd(String cmd, List<String> arguments, [String workingDir = '.']) {
-  final result = Process.runSync(cmd, arguments, workingDirectory: workingDir);
-  stdout.write(result.stdout);
-  stderr.write(result.stderr);
-  if (result.exitCode != 0) {
-    stderr.write(
-        '\nError: command failed: \'$cmd $arguments\' with exit code \'$exitCode\'\n');
-    exit(result.exitCode);
+Future _cmd(String cmd, List<String> arguments,
+    [String workingDir = '.']) async {
+  var process =
+      await Process.start(cmd, arguments, workingDirectory: workingDir);
+  var lineStream =
+      process.stdout.transform(Utf8Decoder()).transform(LineSplitter());
+  await for (var line in lineStream) {
+    print(line);
+  }
+  var errorStream =
+      process.stderr.transform(Utf8Decoder()).transform(LineSplitter());
+  await for (var line in errorStream) {
+    print(line);
+  }
+  final errorCode = await process.exitCode;
+  if (errorCode != 0) {
+    exit(errorCode);
   }
 }
 
@@ -202,8 +194,10 @@ void _cleanupPubspec(String outputDir) {
   File file = new File('$outputDir/$pubspecYaml');
   final docYaml = loadYaml(file.readAsStringSync());
 
-  // make mutable
+  // make yaml doc mutable
   final docJson = jsonDecode(jsonEncode(docYaml));
+
+  // set path to local dependencies
   docJson.forEach((k, v) {
     if (k == dependencies || k == devDependencies) {
       v.forEach((packageName, packageInfo) {
@@ -220,26 +214,4 @@ void _cleanupPubspec(String outputDir) {
 
   // convert JSON map to string, parse as yaml, convert to yaml string and save
   file.writeAsStringSync(toYamlString(loadYaml(jsonEncode(docJson))));
-}
-
-// android/ios project specific fixes
-void _fixProjectBuilds(String src, String dst) {
-  switch (argResults[argArch]) {
-    case 'simple_bloc_flutter':
-      print('\nApplying build configuration for $projectName...');
-      _cmd('cp', [
-        '$src/android/build.gradle',
-        '$dst/android/build.gradle',
-      ]);
-      _cmd('cp', [
-        '$src/android/app/build.gradle',
-        '$dst/android/app/build.gradle',
-      ]);
-      _cmd('cp', [
-        '$src/android/app/google-services.json',
-        '$dst/android/app/google-services.json'
-      ]);
-
-      break;
-  }
 }

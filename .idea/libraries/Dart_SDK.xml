@@ -21,6 +21,7 @@
       <root url="file:///usr/local/opt/dart/libexec/lib/web_gl" />
       <root url="file:///usr/local/opt/dart/libexec/lib/web_sql" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES />
   </library>
 </component>

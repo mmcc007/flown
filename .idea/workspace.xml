@@ -6,7 +6,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7cf69ac5-8143-4ac6-afe1-56ef05874c3c" name="Default" comment="" />
+    <list default="true" id="7cf69ac5-8143-4ac6-afe1-56ef05874c3c" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/flown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/bin/flown.dart" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -45,11 +51,29 @@
       <file leaf-file-name="flown.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/flown.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-614">
-              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+            <state relative-caret-position="3240">
+              <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="stream.dart" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/Cellar/dart/2.1.0-dev.8.0/libexec/lib/async/stream.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="691">
+              <caret line="617" column="9" selection-start-line="617" selection-start-column="9" selection-end-line="617" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="process.dart" pinned="false" current-in-tab="false">
+        <entry file="file:///usr/local/Cellar/dart/2.1.0-dev.8.0/libexec/lib/io/process.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="469">
+              <caret line="425" column="32" selection-start-line="425" selection-start-column="32" selection-end-line="425" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -88,6 +112,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -110,6 +137,7 @@
     <option name="width" value="1095" />
     <option name="height" value="637" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -245,14 +273,14 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" visible="true" weight="0.32756132" />
+      <window_info anchor="bottom" id="Messages" visible="true" weight="0.22655122" />
       <window_info anchor="right" id="Palette&#9;" />
       <window_info id="Image Layers" />
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info anchor="right" id="Flutter Outline" />
       <window_info id="Capture Tool" />
@@ -324,21 +352,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/flown.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#187#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/src/flown_base.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/example/flown_example.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state />
       </provider>
@@ -347,6 +361,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="14" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/flown_example.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/flown.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#187#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -359,10 +387,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/local/Cellar/dart/2.1.0-dev.8.0/libexec/lib/io/process.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="469">
+          <caret line="425" column="32" selection-start-line="425" selection-start-column="32" selection-end-line="425" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/dart/2.1.0-dev.8.0/libexec/lib/async/stream.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="691">
+          <caret line="617" column="9" selection-start-line="617" selection-start-column="9" selection-end-line="617" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/bin/flown.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-614">
-          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
+        <state relative-caret-position="3240">
+          <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

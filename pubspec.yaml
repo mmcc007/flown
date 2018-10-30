@@ -1,8 +1,8 @@
 name: flown
 description: Clone a flutter app from a url.
-# version: 1.0.0
-# homepage: https://www.example.com
-# author: jenkins <email@example.com>
+version: 0.0.1
+homepage: https://www.example.com
+author: Maurice McCabe <mmcc007@gmail.com>
 
 environment:
   sdk: '>=2.0.0-dev.55.0 <3.0.0'

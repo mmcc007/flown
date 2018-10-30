@@ -1,21 +1,50 @@
 # flown
 
-A library for Dart developers.
+A utility for cloning Flutter apps with local dependencies
 
-Created from templates made available by Stagehand under a BSD-style
+`flown` will take a url and search for flutter apps. It will then recursively scan 
+each app's pubspec.yaml for local dependencies anywhere
+in the directory hierarchy, create a new project and install local dependencies.
+
 [license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
 
 ## Usage
 
 A simple usage example:
 
-    import 'package:flown/flown.dart';
+    flown --arch vanilla --name vanilla_project
 
-    main() {
-      var awesome = new Awesome();
-    }
+# General Usage
+
+   usage: flown [--help] --arch <arch name> --name <project name>
+   
+   sample usage: flown --arch vanilla --name vanilla_project
+   
+   --arch=<arch name>             Available architectures:
+   
+         [bloc_flutter]           BloC pattern with Firestore backend.
+         [built_redux]            Redux pattern with generated code.
+         [firestore_redux]        Redux pattern with Firestore backend.
+         [inherited_widget]       Inherited Widget pattern.
+         [mvi_flutter]            MVI pattern with Firestore backend.
+         [mvu]                    MVU pattern.
+         [redurx]                 ReduRx pattern.
+         [redux]                  Redux pattern.
+         [scoped_model]           Scoped Model pattern.
+         [simple_bloc_flutter]    Simple BloC pattern with Firestore backend.
+         [vanilla]                Standard Flutter pattern.
+   
+   --name=<project name>          Name of new project.
+   --help                         Display this help information.
+
+ 
+## Installation
+
+    pub global activate flown
 
 ## Features and bugs
+
+Currently restricted to using https://github.com/brianegan/flutter_architecture_examples.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
