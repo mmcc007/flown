@@ -6,7 +6,7 @@ A utility for cloning Flutter apps with local dependencies
 each app's pubspec.yaml for local dependencies anywhere
 in the directory hierarchy, create a new project and install local dependencies.
 
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[license](https://github.com/mmcc007/flown/blob/master/LICENSE).
 
 ## Usage
 
@@ -15,7 +15,7 @@ A simple usage example:
     flown --arch vanilla --name vanilla_project
 
 # General Usage
-
+```
    usage: flown [--help] --arch <arch name> --name <project name>
    
    sample usage: flown --arch vanilla --name vanilla_project
@@ -36,7 +36,7 @@ A simple usage example:
    
    --name=<project name>          Name of new project.
    --help                         Display this help information.
-
+```
  
 ## Installation
 
@@ -44,8 +44,8 @@ A simple usage example:
 
 ## Features and bugs
 
-Currently restricted to using https://github.com/brianegan/flutter_architecture_examples.
+Currently restricted to using apps found on https://github.com/brianegan/flutter_architecture_examples.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[tracker]: http://example.com/issues/replaceme
+[tracker]: https://github.com/mmcc007/flown/issues
