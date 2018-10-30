@@ -12,7 +12,7 @@ const sampleUsage = 'sample usage: flown --arch vanilla --name vanilla_project';
 // arg constants
 const argHelp = 'help';
 const argArch = 'arch';
-const argOut = 'name';
+const argName = 'name';
 
 // pubspec constants
 const pubspecYaml = 'pubspec.yaml';
@@ -66,7 +66,8 @@ void _parseCommandLineArgs(List<String> arguments) {
           'simple_bloc_flutter': 'Simple BloC pattern with Firestore backend.',
           'vanilla': 'Standard Flutter pattern.',
         })
-    ..addOption(argOut, help: 'Name of new project.', valueHelp: 'project name')
+    ..addOption(argName,
+        help: 'Name of new project.', valueHelp: 'project name')
     ..addFlag(argHelp,
         help: 'Display this help information.', negatable: false);
 
@@ -81,13 +82,13 @@ Future _validateArgs() async {
   if (argResults.arguments.length == 0) _showUsage();
   if (argResults[argHelp]) _showUsage();
   if (argResults[argArch] == null) {
-    _handleError("Missing required argument: arch");
+    _handleError("Missing required argument: $argArch");
   }
-  if (argResults[argOut] == null) {
-    _handleError("Missing required argument: out");
+  if (argResults[argName] == null) {
+    _handleError("Missing required argument: $argName");
   }
-  if (await FileSystemEntity.isDirectory(argResults[argOut])) {
-    _handleError('error: directory ${argResults[argOut]} already exists');
+  if (await FileSystemEntity.isDirectory(argResults[argName])) {
+    _handleError('error: directory ${argResults[argName]} already exists');
   }
 }
 
@@ -119,11 +120,11 @@ void _buildProject() async {
   }
   final inputDir =
       '/tmp/flutter_architecture_samples/$projects/${argResults[argArch]}';
-  final outputDir = argResults[argOut];
+  final outputDir = argResults[argName];
 
   // copy arch project
   print(
-      'Copying ${argResults[argArch]} to ${argResults[argOut]} with local dependencies...');
+      'Copying ${argResults[argArch]} to ${argResults[argName]} with local dependencies...');
   await _copyPackage(inputDir, outputDir);
 
   // copy local dependencies of arch project
@@ -141,7 +142,7 @@ void _buildProject() async {
 
   print(
       '\nYour standalone ${argResults[argArch]} application is ready! To run type:');
-  print('\n  \$ cd ${argResults[argOut]}');
+  print('\n  \$ cd ${argResults[argName]}');
   print('  \$ flutter run\n');
 }
 
@@ -162,6 +163,32 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
       });
     }
   });
+}
+
+// set paths to dependent local packages
+void _cleanupPubspec(String outputDir) {
+  File file = new File('$outputDir/$pubspecYaml');
+  final docYaml = loadYaml(file.readAsStringSync());
+
+  // make yaml doc mutable
+  final docJson = jsonDecode(jsonEncode(docYaml));
+
+  // set path to local dependencies
+  docJson.forEach((k, v) {
+    if (k == dependencies || k == devDependencies) {
+      v.forEach((packageName, packageInfo) {
+        if (packageInfo is Map) {
+          packageInfo.forEach((k, v) {
+            if (k == localDependencyPath) {
+              packageInfo[localDependencyPath] = packageName;
+            }
+          });
+        }
+      });
+    }
+  });
+  // convert JSON map to string, parse as yaml, convert to yaml string and save
+  file.writeAsStringSync(toYamlString(loadYaml(jsonEncode(docJson))));
 }
 
 Future _copyPackage(String srcDir, String dstDir) async {
@@ -187,31 +214,4 @@ Future _cmd(String cmd, List<String> arguments,
   if (errorCode != 0) {
     exit(errorCode);
   }
-}
-
-// set paths to dependent local packages
-void _cleanupPubspec(String outputDir) {
-  File file = new File('$outputDir/$pubspecYaml');
-  final docYaml = loadYaml(file.readAsStringSync());
-
-  // make yaml doc mutable
-  final docJson = jsonDecode(jsonEncode(docYaml));
-
-  // set path to local dependencies
-  docJson.forEach((k, v) {
-    if (k == dependencies || k == devDependencies) {
-      v.forEach((packageName, packageInfo) {
-        if (packageInfo is Map) {
-          packageInfo.forEach((k, v) {
-            if (k == localDependencyPath) {
-              packageInfo[localDependencyPath] = packageName;
-            }
-          });
-        }
-      });
-    }
-  });
-
-  // convert JSON map to string, parse as yaml, convert to yaml string and save
-  file.writeAsStringSync(toYamlString(loadYaml(jsonEncode(docJson))));
 }

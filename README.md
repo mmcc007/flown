@@ -4,19 +4,19 @@
 
 A utility for cloning Flutter apps with local dependencies
 
-`flown` will take a url and search for flutter apps. It will then recursively scan 
-each app's pubspec.yaml for local dependencies anywhere
-in the directory hierarchy, create a new project and install local dependencies.
+`flown` will scan for and present available Flutter apps at a url. After the user 
+selects an app, it will then recursively scan the app's pubspec.yaml for any local dependencies, 
+copy the app and local dependencies to a new directory and install local dependencies.
 
-[license](https://github.com/mmcc007/flown/blob/master/LICENSE).
+[LICENSE](https://github.com/mmcc007/flown/blob/master/LICENSE)
 
 ## Usage
 
-A simple usage example:
+A sample usage:
 
     flown --arch vanilla --name vanilla_project
 
-General Usage
+General usage
 ```
    $ flown --help
    usage: flown [--help] --arch <arch name> --name <project name>
@@ -45,9 +45,12 @@ General Usage
 
     pub global activate flown
 
+Dependencies
+[Flutter SDK](https://flutter.io/get-started/install/) should be installed. Also depends on git.
+
 ## Features and bugs
 
-Currently restricted to using apps found on https://github.com/brianegan/flutter_architecture_examples.
+Currently restricted to using Flutter apps found on https://github.com/brianegan/flutter_architecture_examples.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
