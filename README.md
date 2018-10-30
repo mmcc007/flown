@@ -18,27 +18,27 @@ A sample usage:
 
 General usage
 ```
-   $ flown --help
-   usage: flown [--help] --arch <arch name> --name <project name>
-   
-   sample usage: flown --arch vanilla --name vanilla_project
-   
-   --arch=<arch name>             Available architectures:
-   
-         [bloc_flutter]           BloC pattern with Firestore backend.
-         [built_redux]            Redux pattern with generated code.
-         [firestore_redux]        Redux pattern with Firestore backend.
-         [inherited_widget]       Inherited Widget pattern.
-         [mvi_flutter]            MVI pattern with Firestore backend.
-         [mvu]                    MVU pattern.
-         [redurx]                 ReduRx pattern.
-         [redux]                  Redux pattern.
-         [scoped_model]           Scoped Model pattern.
-         [simple_bloc_flutter]    Simple BloC pattern with Firestore backend.
-         [vanilla]                Standard Flutter pattern.
-   
-   --name=<project name>          Name of new project.
-   --help                         Display this help information.
+$ flown --help
+usage: flown [--help] --arch <arch name> --name <project name>
+
+sample usage: flown --arch vanilla --name vanilla_project
+
+--arch=<arch name>             Available architectures:
+
+      [bloc_flutter]           BloC pattern with Firestore backend.
+      [built_redux]            Redux pattern with generated code.
+      [firestore_redux]        Redux pattern with Firestore backend.
+      [inherited_widget]       Inherited Widget pattern.
+      [mvi_flutter]            MVI pattern with Firestore backend.
+      [mvu]                    MVU pattern.
+      [redurx]                 ReduRx pattern.
+      [redux]                  Redux pattern.
+      [scoped_model]           Scoped Model pattern.
+      [simple_bloc_flutter]    Simple BloC pattern with Firestore backend.
+      [vanilla]                Standard Flutter pattern.
+
+--name=<project name>          Name of new project.
+--help                         Display this help information.
 ```
  
 ## Installation
@@ -46,7 +46,9 @@ General usage
     pub global activate flown
 
 Dependencies
-[Flutter SDK](https://flutter.io/get-started/install/) should be installed. Also depends on git.
+[Flutter SDK](https://flutter.io/get-started/install/) should be installed. 
+At minimum requires [Dart](https://www.dartlang.org/install). 
+Also depends on git.
 
 ## Features and bugs
 

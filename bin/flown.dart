@@ -105,21 +105,22 @@ void _showUsage() {
 }
 
 void _buildProject() async {
+  final tempDir = Directory.systemTemp.path;
   // download repo to tmp location
   if (!await FileSystemEntity.isDirectory(
-      '/tmp/flutter_architecture_samples')) {
+      '$tempDir/flutter_architecture_samples')) {
     print(
-        'Cloning https://github.com/brianegan/flutter_architecture_samples.git to /tmp...');
+        'Cloning https://github.com/brianegan/flutter_architecture_samples.git to $tempDir...');
     await _cmd(
         'git',
         [
           'clone',
           'https://github.com/brianegan/flutter_architecture_samples.git'
         ],
-        '/tmp');
+        tempDir);
   }
   final inputDir =
-      '/tmp/flutter_architecture_samples/$projects/${argResults[argArch]}';
+      '$tempDir/flutter_architecture_samples/$projects/${argResults[argArch]}';
   final outputDir = argResults[argName];
 
   // copy arch project
@@ -129,7 +130,7 @@ void _buildProject() async {
 
   // copy local dependencies of arch project
   _copyLocalDependencies(
-      '/tmp/flutter_architecture_samples/$projects/${argResults[argArch]}/$pubspecYaml',
+      '$tempDir/flutter_architecture_samples/$projects/${argResults[argArch]}/$pubspecYaml',
       inputDir,
       outputDir);
 
