@@ -14,8 +14,9 @@ A simple usage example:
 
     flown --arch vanilla --name vanilla_project
 
-# General Usage
+General Usage
 ```
+   $ flown --help
    usage: flown [--help] --arch <arch name> --name <project name>
    
    sample usage: flown --arch vanilla --name vanilla_project
