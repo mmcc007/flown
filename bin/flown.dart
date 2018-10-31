@@ -31,11 +31,11 @@ ArgParser argParser;
 ArgResults argResults;
 
 /// generate a standalone project from an example architecture
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   exitCode = 0; //presume success
   _parseCommandLineArgs(arguments);
-  _validateArgs();
-  _buildProject();
+  await _validateArgs();
+  await _buildProject();
 }
 
 void _parseCommandLineArgs(List<String> arguments) {
@@ -121,14 +121,15 @@ void _buildProject() async {
   // copy arch project
   print(
       'Copying ${argResults[argArch]} to ${argResults[argName]} with local dependencies...');
-  await _copyPackage(inputDir, outputDir);
+  _copyPackage(inputDir, outputDir);
 
   // copy local dependencies of arch project
   _copyLocalDependencies(path.join(inputDir, pubspecYaml), inputDir, outputDir);
 
   // cleanup new project pubspec
-  print('\nInstalling local dependencies in $outputDir...');
+  stdout.write('\nInstalling local dependencies in $outputDir...');
   _cleanupPubspec(outputDir);
+  print(' ✅');
 
   // delete downloaded url
 //  await _cmd('rm', ['-rf', path.join(tempDir, projectName)]);
@@ -140,8 +141,9 @@ void _buildProject() async {
 }
 
 void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
-  final docYaml = loadYamlDocument(File(pubspecPath).readAsStringSync());
-  docYaml.contents.value.forEach((k, v) {
+  final docYaml = loadYaml(File(pubspecPath).readAsStringSync());
+
+  docYaml.value.forEach((k, v) {
     if (k == dependencies || k == devDependencies) {
       v.forEach((packageName, packageInfo) {
         if (packageInfo is Map) {
@@ -163,10 +165,9 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
 // set paths to dependent local packages
 void _cleanupPubspec(String outputDir) {
   File file = new File(path.join(outputDir, pubspecYaml));
-  final docYaml = loadYaml(file.readAsStringSync());
 
   // make yaml doc mutable
-  final docJson = jsonDecode(jsonEncode(docYaml));
+  final docJson = jsonDecode(jsonEncode(loadYaml(file.readAsStringSync())));
 
   // set path to local dependencies
   docJson.forEach((k, v) {
@@ -186,32 +187,21 @@ void _cleanupPubspec(String outputDir) {
   file.writeAsStringSync(toYamlString(loadYaml(jsonEncode(docJson))));
 }
 
-Future _copyPackage(String srcDir, String dstDir) async {
-  print('  copying to $dstDir...');
+void _copyPackage(String srcDir, String dstDir) async {
+  stdout.write('  copying to $dstDir...');
   if (Platform.isWindows) {
-    await _cmd('xcopy', ['$srcDir', '$dstDir', '/e', '/i', '/q']);
+    _cmd('xcopy', ['$srcDir', '$dstDir', '/e', '/i', '/q']);
   } else {
-    await _cmd('cp', ['-r', '$srcDir', '$dstDir']);
+    _cmd('cp', ['-r', '$srcDir', '$dstDir']);
   }
+  print(' ✅');
 }
 
-Future _cmd(String cmd, List<String> arguments,
-    [String workingDir = '.']) async {
-  var process =
-      await Process.start(cmd, arguments, workingDirectory: workingDir);
-  var lineStream =
-      process.stdout.transform(Utf8Decoder()).transform(LineSplitter());
-  await for (var line in lineStream) {
-    print(line);
-  }
-  var errorStream =
-      process.stderr.transform(Utf8Decoder()).transform(LineSplitter());
-  await for (var line in errorStream) {
-    print(line);
-  }
-  final errorCode = await process.exitCode;
-  // todo: drain stdout after exit code returns to avoid late output in windows
-  if (errorCode != 0) {
-    exit(errorCode);
+void _cmd(String cmd, List<String> arguments, [String workingDir = '.']) {
+  final result = Process.runSync(cmd, arguments, workingDirectory: workingDir);
+  if (result.exitCode != 0) {
+    //  stdout.write(result.stdout);
+    stderr.write(result.stderr);
+    exit(result.exitCode);
   }
 }
