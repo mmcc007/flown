@@ -124,10 +124,7 @@ void _buildProject() async {
   await _copyPackage(inputDir, outputDir);
 
   // copy local dependencies of arch project
-  _copyLocalDependencies(
-      path.join(inputDir, pubspecYaml),
-      inputDir,
-      outputDir);
+  _copyLocalDependencies(path.join(inputDir, pubspecYaml), inputDir, outputDir);
 
   // cleanup new project pubspec
   print('\nInstalling local dependencies in $outputDir...');
@@ -150,9 +147,11 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
         if (packageInfo is Map) {
           packageInfo.forEach((k, v) {
             if (k == localDependencyPath) {
-              _copyPackage('$srcDir/$v', '$dstDir/$packageName');
+              _copyPackage(
+                  path.join(srcDir, v), path.join(dstDir, packageName));
               // copy any local dependencies within this local dependency
-              _copyLocalDependencies('$srcDir/$v/$pubspecYaml', srcDir, dstDir);
+              _copyLocalDependencies(
+                  path.join(srcDir, v, pubspecYaml), srcDir, dstDir);
             }
           });
         }
@@ -163,7 +162,7 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
 
 // set paths to dependent local packages
 void _cleanupPubspec(String outputDir) {
-  File file = new File('$outputDir/$pubspecYaml');
+  File file = new File(path.join(outputDir, pubspecYaml));
   final docYaml = loadYaml(file.readAsStringSync());
 
   // make yaml doc mutable
@@ -189,7 +188,25 @@ void _cleanupPubspec(String outputDir) {
 
 Future _copyPackage(String srcDir, String dstDir) async {
   print('  copying to $dstDir...');
-  await _cmd('cp', ['-r', '$srcDir', '$dstDir']);
+  if (Platform.isWindows) {
+    await _cmd('cmd', [
+      '/c',
+      'echo',
+      'D',
+      '|',
+      'xcopy',
+      '$srcDir',
+      '$dstDir',
+      '/O',
+      '/X',
+      '/E',
+      '/H',
+      '/K',
+      '>NUL'
+    ]);
+  } else {
+    await _cmd('cp', ['-r', '$srcDir', '$dstDir']);
+  }
 }
 
 Future _cmd(String cmd, List<String> arguments,
