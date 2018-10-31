@@ -189,21 +189,7 @@ void _cleanupPubspec(String outputDir) {
 Future _copyPackage(String srcDir, String dstDir) async {
   print('  copying to $dstDir...');
   if (Platform.isWindows) {
-    await _cmd('cmd', [
-      '/c',
-      'echo',
-      'D',
-      '|',
-      'xcopy',
-      '$srcDir',
-      '$dstDir',
-      '/O',
-      '/X',
-      '/E',
-      '/H',
-      '/K',
-      '>NUL'
-    ]);
+    await _cmd('xcopy', ['$srcDir', '$dstDir', '/e', '/i', '/q']);
   } else {
     await _cmd('cp', ['-r', '$srcDir', '$dstDir']);
   }
@@ -224,6 +210,7 @@ Future _cmd(String cmd, List<String> arguments,
     print(line);
   }
   final errorCode = await process.exitCode;
+  // todo: drain stdout after exit code returns to avoid late output in windows
   if (errorCode != 0) {
     exit(errorCode);
   }

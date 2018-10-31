@@ -6,7 +6,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7cf69ac5-8143-4ac6-afe1-56ef05874c3c" name="Default" comment="">
+    <list default="true" id="7cf69ac5-8143-4ac6-afe1-56ef05874c3c" name="Default" comment="Fixed xcode call for windows">
+      <change beforePath="$PROJECT_DIR$/.idea/flown.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/flown.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/flown.dart" beforeDir="false" afterPath="$PROJECT_DIR$/bin/flown.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -65,8 +67,8 @@
       <file leaf-file-name="flown.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/flown.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="149" column="75" selection-start-line="149" selection-start-column="75" selection-end-line="149" selection-end-column="75" />
+            <state relative-caret-position="1152">
+              <caret line="213" column="79" selection-start-line="213" selection-start-column="79" selection-end-line="213" selection-end-column="79" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -330,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1540944006617</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added more path abstraction">
+      <created>1540945936228</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1540945936228</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -379,7 +388,8 @@
     <MESSAGE value="Added handling for temp directory" />
     <MESSAGE value="Added path abstraction for platform independence" />
     <MESSAGE value="Added xcopy command for windows" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added xcopy command for windows" />
+    <MESSAGE value="Added more path abstraction" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added more path abstraction" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/pubspec.yaml">
@@ -621,8 +631,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/flown.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="149" column="75" selection-start-line="149" selection-start-column="75" selection-end-line="149" selection-end-column="75" />
+        <state relative-caret-position="1152">
+          <caret line="213" column="79" selection-start-line="213" selection-start-column="79" selection-end-line="213" selection-end-column="79" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
