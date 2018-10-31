@@ -147,8 +147,8 @@ void _copyLocalDependencies(String pubspecPath, String srcDir, String dstDir) {
         if (packageInfo is Map) {
           packageInfo.forEach((k, v) {
             if (k == localDependencyPath) {
-              _copyPackage(
-                  path.join(srcDir, v), path.join(dstDir, packageName));
+              _copyPackage(path.joinAll([srcDir, path.joinAll(v.split('/'))]),
+                  path.join(dstDir, packageName));
               // copy any local dependencies within this local dependency
               _copyLocalDependencies(
                   path.join(srcDir, v, pubspecYaml), srcDir, dstDir);
