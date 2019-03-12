@@ -1,6 +1,6 @@
 name: flown
 description: Clone a Flutter app from a url. Any local dependencies are installed with the app package.
-version: 0.0.3
+version: 0.1.0
 homepage: https://github.com/mmcc007/flown
 author: Maurice McCabe <mmcc007@gmail.com>
 
