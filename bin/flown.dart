@@ -24,7 +24,6 @@ const localDependencyPath = 'path';
 // project constants
 const projectURL = 'https://github.com/brianegan/$projectName.git';
 const projectName = 'flutter_architecture_samples';
-const projectsDir = 'example';
 
 // globals
 ArgParser argParser;
@@ -115,7 +114,7 @@ void _buildProject() async {
     await _cmd('git', ['clone', projectURL], tempDir);
   }
   final inputDir =
-      path.join(tempDir, projectName, projectsDir, argResults[argArch]);
+      path.join(tempDir, projectName, argResults[argArch]);
   final outputDir = argResults[argName];
 
   // copy arch project
