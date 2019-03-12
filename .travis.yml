@@ -12,7 +12,7 @@ before_script:
   - flutter doctor -v
 
   # install flown
-  pub global activate -path .
+  - pub global activate -path .
 script:
   - flown --arch vanilla --name vanilla
   - cd vanilla
