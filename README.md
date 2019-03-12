@@ -1,4 +1,5 @@
 [![pub package](https://img.shields.io/pub/v/flown.svg)](https://pub.dartlang.org/packages/flown)
+[![Build Status](https://travis-ci.com/mmcc007/flown.svg?branch=master)](https://travis-ci.com/mmcc007/flown)
 
 # flown
 
