@@ -14,6 +14,6 @@ before_script:
   # install flown
   - pub global activate --source path .
 script:
-  - flown --arch vanilla --name vanilla
-  - cd vanilla
+  - flown --arch bloc_library --name my_todo
+  - cd my_todo
   - flutter test

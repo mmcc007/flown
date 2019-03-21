@@ -42,6 +42,7 @@ void _parseCommandLineArgs(List<String> arguments) {
     ..addOption(argArch,
         allowed: [
           'bloc_flutter',
+          'bloc_library',
           'built_redux',
           'firestore_redux',
           'inherited_widget',
@@ -57,6 +58,7 @@ void _parseCommandLineArgs(List<String> arguments) {
         valueHelp: 'arch name',
         allowedHelp: {
           'bloc_flutter': 'BloC pattern with Firestore backend.',
+          'bloc_library': 'BloC pattern with local store.',
           'built_redux': 'Redux pattern with generated code.',
           'firestore_redux': 'Redux pattern with Firestore backend.',
           'inherited_widget': 'Inherited Widget pattern.',
@@ -113,8 +115,7 @@ void _buildProject() async {
     print('Cloning $projectURL to $tempDir...');
     await _cmd('git', ['clone', projectURL], tempDir);
   }
-  final inputDir =
-      path.join(tempDir, projectName, argResults[argArch]);
+  final inputDir = path.join(tempDir, projectName, argResults[argArch]);
   final outputDir = argResults[argName];
 
   // copy arch project
